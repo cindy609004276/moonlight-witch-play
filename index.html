@@ -728,6 +728,10 @@ button:focus-visible,label:focus-within{outline:3px solid #ffdb92;outline-offset
 .forestMagicLayer.weather-rain .forestMist{opacity:.45}
 .forestMagicLayer.weather-glow .forestFireflies{opacity:.95;filter:drop-shadow(0 0 7px #b8ffe8)}
 .forestMagicLayer.weather-glow .forestButterflies span{color:#eaffd2;text-shadow:0 0 15px #caff8c,0 0 27px #a6ffe8}
+.forestMagicLayer.weather-snow .forestFireflies{opacity:.18;filter:grayscale(.8)}
+.forestMagicLayer.weather-snow .forestButterflies span{color:#eef7ff;text-shadow:0 0 12px #fff,0 0 22px #c8e4ff}
+.forestMagicLayer.weather-snow .forestMist{background:linear-gradient(90deg,transparent,#e9f4ff55 30%,#dce9ff66 55%,transparent);opacity:.7}
+.winterHint{margin-top:7px;padding:7px 9px;border-radius:10px;background:#e9f3ff;color:#4f6680;font-weight:700}
 .ambienceCaption{max-width:88%;overflow:hidden;text-overflow:ellipsis}
 @keyframes mistDrift{from{background-position:0 0,20px 0;transform:translateX(-1%)}to{background-position:30px 0,-25px 0;transform:translateX(1%)}}
 @keyframes clearTwinkle{from{opacity:.12}to{opacity:.42}}
@@ -954,7 +958,8 @@ function startPrologueLulu(){
 const forestFriendCatalog=[
  {id:"sprite",name:"月光精灵",emoji:"🧚",line:"月光精灵停在窗台上，把一颗会发光的小种子放在花盆旁。"},
  {id:"fox",name:"栗子狐狸",emoji:"🦊",line:"栗子狐狸叼来一枚圆圆的松果，在门口蹭了蹭月芽的裙角。"},
- {id:"deer",name:"星角小鹿",emoji:"🦌",line:"星角小鹿安静地站在花园边，角上的星屑照亮了夜露。"}
+ {id:"deer",name:"星角小鹿",emoji:"🦌",line:"星角小鹿安静地站在花园边，角上的星屑照亮了夜露。"},
+ {id:"rabbit",name:"雪绒兔",emoji:"🐇",line:"雪绒兔把一小团雪轻轻推到门边，又把一片柔软的白色绒毛留在窗台。"}
 ];
 function forestFriendsHomeCard(){
  const friends=forestFriendCatalog.filter(f=>(s.forest.friends||[]).includes(f.id));
@@ -978,7 +983,7 @@ const creatureCatalog=[
  {id:"fox",name:"栗子狐狸",species:"森林小兽",rarity:"稀有",emoji:"🦊",img:"creature_fox_chestnut.webp",personality:"机灵、亲近、喜欢小点心",favorite:"月蜜、松果、暖暖的地方",unlock:"帮助森林里的栗子狐狸",gift:"honey",giftName:"月蜜",giftGain:18,visitLine:"栗子狐狸叼来一枚圆松果，放在月芽脚边。"},
  {id:"deer",name:"星角小鹿",species:"星光生灵",rarity:"稀有",emoji:"🦌",img:"creature_deer_starlight.webp",personality:"安静、温柔、喜欢星光",favorite:"梦境花、星辰晶石",unlock:"在森林水边帮助星角小鹿",gift:"flower",giftName:"梦境花",giftGain:18,visitLine:"星角小鹿把一片闪着微光的叶子留在窗台。"},
  {id:"sprite",name:"月光精灵",species:"魔法精灵",rarity:"稀有",emoji:"🧚",img:"creature_fairy_moonlight.webp",personality:"好奇、活泼、喜欢发光的东西",favorite:"萤火精华、星辰晶石",unlock:"在精灵秘林与它成为朋友",gift:"firefly",giftName:"萤火精华",giftGain:20,visitLine:"月光精灵在花盆边种下一颗星种子。"},
- {id:"rabbit",name:"雪绒兔",species:"森林小兽",rarity:"普通",emoji:"🐇",img:"creature_rabbit_snow.webp",personality:"害羞、软糯、喜欢安静",favorite:"梦境花、月蜜",unlock:"未来版本开放",gift:"flower",giftName:"梦境花",giftGain:12,visitLine:"雪绒兔暂时还没有来到月光小屋。"}
+ {id:"rabbit",name:"雪绒兔",species:"森林小兽",rarity:"普通",emoji:"🐇",img:"creature_rabbit_snow.webp",personality:"害羞、软糯、喜欢安静",favorite:"梦境花、月蜜",unlock:"冬季探索月影水潭，帮助它找到回家的路",gift:"flower",giftName:"梦境花",giftGain:12,visitLine:"雪绒兔把一小团雪轻轻推到门边，又把一片柔软的白色绒毛留在窗台。"}
 ];
 function creatureBond(id){
  const b=s.forest.bonds[id]||{level:1,xp:0};
@@ -1161,7 +1166,9 @@ function forestEcology(){
 }
 function forestEcologyCard(){
  const e=forestEcology();
- return `<div class="forestEcology"><div class="forestEcologyTop"><div><small>🌿 森林今日生态</small><b>${e.weather.emoji} ${e.weather.name} · ${e.phase}</b></div><span>${e.season}季</span></div><p>${e.weather.desc}</p><div class="forestEcologyHint">今日偏爱：${({oldtree:"古树秘径奇遇",crystal:"星辰晶石",mush:"梦境蘑菇",firefly:"萤火精华"})[e.weather.bonus]} · ${e.phase==="夜晚"?"夜晚更容易遇见森林访客":e.phase==="黄昏"?"黄昏时奇遇略微增加":"探索会随时间呈现不同气氛"}</div></div>`;
+ const rabbitKnown=(s.forest.friends||[]).includes("rabbit");
+ const seasonalHint=e.season==="冬"?(rabbitKnown?"雪绒兔已经成为森林的朋友":"冬日限定：探索月影水潭，有机会遇见雪绒兔"):"";
+ return `<div class="forestEcology"><div class="forestEcologyTop"><div><small>🌿 森林今日生态</small><b>${e.weather.emoji} ${e.weather.name} · ${e.phase}</b></div><span>${e.season}季</span></div><p>${e.weather.desc}</p><div class="forestEcologyHint">今日偏爱：${({oldtree:"古树秘径奇遇",crystal:"星辰晶石",mush:"梦境蘑菇",firefly:"萤火精华"})[e.weather.bonus]} · ${e.phase==="夜晚"?"夜晚更容易遇见森林访客":e.phase==="黄昏"?"黄昏时奇遇略微增加":"探索会随时间呈现不同气氛"}</div>${seasonalHint?`<div class="forestEcologyHint winterHint">❄️ ${seasonalHint}</div>`:""}</div>`;
 }
 
 const forestStoryChapters=[
@@ -1223,10 +1230,11 @@ function chooseForestOption(index){
  let note=`${e.emoji} ${e.title}：${e.replies[index]}`;
  s.forest.log.push(note);if(s.forest.log.length>20)s.forest.log=s.forest.log.slice(-20);
  if(e.id==="moon_sprite_friend"){s.forest.spriteFriend=true;s.forest.discoveries.push("月光精灵");}
+ if(e.id==="winter_rabbit_friend"&&!s.forest.rareFinds.includes("snowrabbit")){s.forest.rareFinds.push("snowrabbit");s.forest.discoveries.push("雪绒兔");}
  if(e.id==="glowmoth"&&!s.forest.rareFinds.includes("glowmoth")){s.forest.rareFinds.push("glowmoth");s.forest.discoveries.push("月翅蝶");}
  if(e.id==="moonfish"&&!s.forest.rareFinds.includes("moonfish")){s.forest.rareFinds.push("moonfish");s.forest.discoveries.push("星鳞鱼");}
- const friendId=e.id==="moon_sprite_friend"?"sprite":e.id;
- if(["sprite","fox","deer"].includes(friendId)){
+ const friendId=e.id==="moon_sprite_friend"?"sprite":e.id==="winter_rabbit_friend"?"rabbit":e.id;
+ if(["sprite","fox","deer","rabbit"].includes(friendId)){
   if(!s.forest.friends.includes(friendId))s.forest.friends.push(friendId);
   s.forest.bonds[friendId]=s.forest.bonds[friendId]||{level:1,xp:0};
  }
@@ -1236,24 +1244,35 @@ function chooseForestOption(index){
  $("rewardText").textContent=e.replies[index]+" 这段经历已经写进探索手记。";
  $("modal").classList.add("show");scene="grove";renderScene();
 }
+function seasonalForestEncounter(placeId,ecology,friends){
+ if(placeId!=="moonpool"||ecology.season!=="冬"||(friends||[]).includes("rabbit"))return null;
+ return {
+  id:"winter_rabbit_friend",emoji:"🐇",title:"雪夜里的雪绒兔",
+  text:"冬日的月影水潭结着一层薄薄的冰。墨团忽然停下脚步，耳朵轻轻转向岸边。一只雪白的小兔缩在覆霜的石头旁，鼻尖沾着一点雪。它似乎和家人走散了，想靠近你，却又有些害怕。",
+  a:["把一朵小花放在它身边","让墨团轻轻向它打招呼"],
+  replies:["雪绒兔闻了闻花香，终于放松下来。它把一枚暖暖的月蜜果放进月芽掌心，决定以后常来森林找你。","墨团没有急着靠近，只是安静地坐在旁边。雪绒兔慢慢走出来，轻轻碰了碰它的鼻尖，从此记住了这位新朋友。"],
+  rewards:[{flower:2,honey:1,xp:16},{feather:1,crystal:1,xp:18}]
+ };
+}
 function exploreForestPlace(id){
  if(s.energy<1){toast("精力有点少，回小屋歇一会儿吧");return}
  let place=forestPlaces.find(x=>x.id===id);if(!place)return;
  if(place.unlock&&s.forest.steps<place.unlock){toast("还需要探索更多森林小径才能到这里");return;}
  s.energy--;s.forest.steps++;s.tasks.gather++;addXP(5);
  const ecology=forestEcology();
+ const winterRabbitEvent=seasonalForestEncounter(id,ecology,s.forest.friends||[]);
  let eventChance=(id==="oldtree"||id==="portal"||id==="whisper"?.72:.34)+ecology.eventBonus;
  if(id===ecology.weather.bonus)eventChance+=.08;
  eventChance=Math.min(.92,eventChance);
  // The Moonshade Pool has a small chance to reveal a rare Moon Dew.
- if(id==="moonpool"&&Math.random()<.28&&!s.forest.rareFinds.includes("moondew")){
+ if(id==="moonpool"&&!winterRabbitEvent&&Math.random()<.28&&!s.forest.rareFinds.includes("moondew")){
   s.forest.rareFinds.push("moondew");s.bag.flower=(s.bag.flower||0)+2;s.coins+=16;addXP(14);
   s.forest.log.push("🌙 稀有发现：月露花 ×2，星砂 ×16。花瓣上还留着月光。");
   toast("🌟 稀有发现！月露花 ×2 · 星砂 ×16");
   updateStats();renderScene();return;
  }
- let event=null;
- if(Math.random()<eventChance){
+ let event=winterRabbitEvent;
+ if(!event&&Math.random()<eventChance){
   if(id==="firefly"&&ecology.weather.id==="glow"&&!s.forest.rareFinds.includes("glowmoth")){
    event={id:"glowmoth",emoji:"🦋",title:"萤光夜的月翅蝶",text:"今晚的萤火桥比平时更亮。一只月翅蝶停在墨团的耳尖，翅膀上像落着一整片星河。它似乎只在萤光夜出现。",a:["安静地观察它的翅纹","拿出星尘轻轻回应"],replies:["月翅蝶舒展开翅膀，留下几缕柔光。","月翅蝶绕着月芽飞了一圈，把一枚星羽放进她掌心。"],rewards:[{firefly:2,xp:14},{feather:1,crystal:1,xp:16}]};
   }else if(id==="moonpool"&&ecology.phase==="夜晚"&&!s.forest.rareFinds.includes("moonfish")){
@@ -1732,7 +1751,7 @@ function createMusicEngine(){
 
 let ambienceMaster=null,ambienceNoiseBuffer=null,ambienceNodes=new Set(),ambiencePlaying=false,ambienceSceneKey="",ambienceTransitionTimer=null;
 function ambienceThemeForScene(v){
- const eco=forestEcology(),weather=eco.weather.id;
+ const eco=forestEcology(),weather=eco.season==="冬"?"snow":eco.weather.id;
  if(v==="grove"||v==="forestEvent"||v==="bestiary"||v==="habitat")return "forest-"+weather+"-"+(eco.phase==="夜晚"?"night":"day");
  if(v==="craft")return "workshop";
  if(v==="town"||v==="observatory"||v==="wish"||v==="journal"||v==="resident")return "town";
@@ -1743,7 +1762,7 @@ function ambienceThemeName(){
  const key=ambienceSceneKey||ambienceThemeForScene(scene);
  if(key.startsWith("forest-")){
   const weather=key.split("-")[1];
-  return ({mist:"雾林风声",clear:"夜虫与微风",rain:"林间细雨",glow:"萤火虫轻鸣"})[weather]||"森林环境音";
+  return ({mist:"雾林风声",clear:"夜虫与微风",rain:"林间细雨",glow:"萤火虫轻鸣",snow:"冬日林间风雪"})[weather]||"森林环境音";
  }
  return ({workshop:"坩埚咕噜声",town:"月光风铃",doorstep:"小屋门前", "cottage-mist":"壁炉与窗外薄雾","cottage-clear":"壁炉与夜虫","cottage-rain":"壁炉与窗外细雨","cottage-glow":"壁炉与萤光夜"})[key]||"童话环境音";
 }
@@ -1815,9 +1834,10 @@ function startAmbienceScene(key){
   ambienceTone(key==="town"?880:660,.00065,"sine",.08,.00035);
  }else if(key.startsWith("forest-")){
   const weather=key.split("-")[1];
-  ambienceNoise("lowpass",weather==="mist"?520:310,.014,.12,.004);
+  ambienceNoise("lowpass",weather==="mist"?520:weather==="snow"?210:310,weather==="snow"?.016:.014,.12,.004);
   if(weather==="rain")ambienceNoise("bandpass",1050,.013,.22,.004,1.1);
   if(weather==="mist")ambienceNoise("bandpass",720,.003,.07,.001,1.3);
+  if(weather==="snow"){ambienceNoise("bandpass",1550,.0015,.15,.001,1.2);ambienceTone(980,.00045,"sine",.05,.0002);}
   if(weather==="clear"||weather==="glow"||key.endsWith("night"))ambienceTone(2550,.0015,"sine",4.8,.0011);
   if(weather==="glow")ambienceTone(1860,.0008,"sine",3.7,.0005);
  }else{
@@ -1970,12 +1990,13 @@ function renderScene(){
  const ecology=forestEcology();
  const weather=ecology.weather.id;
  if(scene==="grove"||scene==="forestEvent"){
-  let magic=document.createElement("div");magic.className="forestMagicLayer weather-"+weather;
+  let visualWeather=ecology.season==="冬"?"snow":weather;
+  let magic=document.createElement("div");magic.className="forestMagicLayer weather-"+visualWeather;
   magic.innerHTML=`<div class="forestFireflies"></div><div class="forestButterflies"><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div><div class="forestMist"></div>`;
   st.appendChild(magic);
  }
- let ambience=document.createElement("div");ambience.className="worldAmbience "+worldTime.id+" weather-"+weather;
- const weatherLabel={mist:"薄雾轻绕",clear:"月色晴朗",rain:"林间细雨",glow:"萤光飞舞"}[weather]||ecology.weather.name;
+ let ambience=document.createElement("div");ambience.className="worldAmbience "+worldTime.id+" weather-"+(ecology.season==="冬"?"snow":weather);
+ const weatherLabel=ecology.season==="冬"?"冬日初雪":({mist:"薄雾轻绕",clear:"月色晴朗",rain:"林间细雨",glow:"萤光飞舞"}[weather]||ecology.weather.name);
  ambience.innerHTML=`<div class="ambienceOrb"></div><div class="ambienceStars">✦　·　✧　　 ✦　·　✧</div><div class="weatherParticles"></div><div class="ambienceCaption">${worldTime.icon} ${worldTime.label} · ${ecology.weather.emoji} ${weatherLabel} · ${worldTime.line}</div>`;
  st.appendChild(ambience);
  if(scene==="grove"||scene==="forestEvent"){
