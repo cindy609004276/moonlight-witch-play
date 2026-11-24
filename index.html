@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>不太灵的女巫｜月光工坊 V50</title>
+<title>不太灵的女巫｜月光工坊 V51</title>
 <style>
 :root{--ink:#38254a;--deep:#20172b;--plum:#4a315e;--violet:#a47ac0;--gold:#edc27c;--cream:#fff2dc;--rose:#e9a7c5;--mint:#b8d9c0}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#6d4c7c,#21172b 62%);color:var(--cream);font-family:"Microsoft YaHei",system-ui,sans-serif;min-height:100vh}
@@ -1272,8 +1272,9 @@ function exploreForestPlace(id){
   updateStats();renderScene();return;
  }
  let event=winterRabbitEvent;
- if(!event&&Math.random()<eventChance){
-  if(id==="firefly"&&ecology.weather.id==="glow"&&!s.forest.rareFinds.includes("glowmoth")){
+ if(event||Math.random()<eventChance){
+  if(!event){
+   if(id==="firefly"&&ecology.weather.id==="glow"&&!s.forest.rareFinds.includes("glowmoth")){
    event={id:"glowmoth",emoji:"🦋",title:"萤光夜的月翅蝶",text:"今晚的萤火桥比平时更亮。一只月翅蝶停在墨团的耳尖，翅膀上像落着一整片星河。它似乎只在萤光夜出现。",a:["安静地观察它的翅纹","拿出星尘轻轻回应"],replies:["月翅蝶舒展开翅膀，留下几缕柔光。","月翅蝶绕着月芽飞了一圈，把一枚星羽放进她掌心。"],rewards:[{firefly:2,xp:14},{feather:1,crystal:1,xp:16}]};
   }else if(id==="moonpool"&&ecology.phase==="夜晚"&&!s.forest.rareFinds.includes("moonfish")){
    event={id:"moonfish",emoji:"🐟",title:"月影水潭的星鳞鱼",text:"夜色映在水面，一条银蓝色的小鱼跃出水面，鳞片像碎星一样闪烁。它似乎被月芽手里的晶石吸引。",a:["把晶石放在岸边","静静等待它靠近"],replies:["星鳞鱼衔走一粒晶屑，留下两朵月露花。","星鳞鱼绕着水潭游了一圈，水面浮起萤火精华。"],rewards:[{flower:2,xp:14},{firefly:2,coins:12}]};
@@ -1281,6 +1282,7 @@ function exploreForestPlace(id){
    event={id:"moon_sprite_friend",emoji:"🧚",title:"第一次遇见月光精灵",text:"一只戴着露珠花冠的小精灵躲在蘑菇后面。它没有逃走，只是好奇地看着墨团。",a:["轻轻伸出手","让墨团先打个招呼"],replies:["小精灵把一颗星种子放进月芽手心。从此，它愿意偶尔来森林里找你。","墨团乖乖坐好，小精灵开心地绕着它飞了一圈，留下闪亮的礼物。"],rewards:[{crystal:1,coins:18,xp:12},{firefly:2,coins:12,xp:14}]};
   }else{
    event=forestEncounters[Math.floor(Math.random()*forestEncounters.length)];
+  }
   }
   s.forest.event=event;scene="forestEvent";
  }else{
