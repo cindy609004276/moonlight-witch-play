@@ -1665,7 +1665,7 @@ const musicThemes={
  story:{bpm:54,chords:[[53,57,60,64],[50,53,57,60],[48,52,55,59],[45,48,52,55]],melody:[76,72,69,72,77,81,79,76,72,69,67,72,76,79,81,77],sparkle:[88,91,96,91]}
 };
 let musicCtx=null,musicMaster=null,musicDelay=null,musicDelayFilter=null,musicFeedback=null,musicWet=null;
-let musicPlaying=false,musicLoopTimer=null,musicLoopIndex=0,musicCurrentScene="home";
+let musicPlaying=false,musicLoopTimer=null,musicStopTimer=null,musicLoopIndex=0,musicCurrentScene="home";
 let musicNodes=new Set();
 function musicThemeForScene(v){
  if(v==="grove"||v==="forestEvent"||v==="bestiary"||v==="habitat")return "forest";
@@ -1756,16 +1756,17 @@ function stopMusicVoices(){
 async function toggleMusic(){
  if(musicPlaying){
   musicPlaying=false;clearTimeout(musicLoopTimer);musicLoopTimer=null;
-  if(musicCtx&&musicMaster){const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);musicMaster.gain.setTargetAtTime(0,now,.12);setTimeout(stopMusicVoices,260);}
+  if(musicCtx&&musicMaster){const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);musicMaster.gain.setTargetAtTime(0,now,.12);clearTimeout(musicStopTimer);musicStopTimer=setTimeout(()=>{if(!musicPlaying)stopMusicVoices();musicStopTimer=null;},260);}
   s.musicOn=false;save();updateMusicUI();toast("童话音乐已轻轻停下");return;
  }
  if(!musicCtx&&!createMusicEngine()){toast("当前浏览器不支持背景音乐");return;}
  try{
+  clearTimeout(musicStopTimer);musicStopTimer=null;
   await musicCtx.resume();
   musicPlaying=true;s.musicOn=true;save();
   const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);
   musicMaster.gain.setValueAtTime(musicMaster.gain.value,now);
-  musicMaster.gain.linearRampToValueAtTime((Number(s.musicVolume)||45)/100*.19,now+1.3);
+  musicMaster.gain.linearRampToValueAtTime(Math.max(0,Math.min(100,Number(s.musicVolume===undefined?45:s.musicVolume)))/100*.19,now+1.3);
   musicLoopIndex=0;scheduleMusicLoop();updateMusicUI();
   toast("🌙 月光旋律开始了");
  }catch(e){musicPlaying=false;s.musicOn=false;updateMusicUI();toast("音乐暂时无法播放，请再试一次");}
