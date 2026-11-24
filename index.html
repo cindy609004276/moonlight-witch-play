@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>不太灵的女巫｜月光工坊 V43</title>
+<title>不太灵的女巫｜月光工坊 V49</title>
 <style>
 :root{--ink:#38254a;--deep:#20172b;--plum:#4a315e;--violet:#a47ac0;--gold:#edc27c;--cream:#fff2dc;--rose:#e9a7c5;--mint:#b8d9c0}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#6d4c7c,#21172b 62%);color:var(--cream);font-family:"Microsoft YaHei",system-ui,sans-serif;min-height:100vh}
@@ -688,12 +688,33 @@ button:focus-visible,label:focus-within{outline:3px solid #ffdb92;outline-offset
 .forestEcologyTop span{padding:6px 10px;border-radius:99px;background:#ffffff18;border:1px solid #ffffff30;font-size:12px}
 .forestEcology p{font-size:13px;line-height:1.65;color:#e0eee4;margin:9px 0}
 .forestEcologyHint{font-size:11px;color:#d7e8c9;padding-top:8px;border-top:1px solid #ffffff2a}
+
+/* V49 — original fairy-tale soundscape and moonlit collection showcase */
+.musicDock{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:7px 10px;border:1px solid #9d7aab;border-radius:16px;background:linear-gradient(135deg,#33233fdd,#21172bdd);box-shadow:0 5px 18px #10091b55}
+.musicDock button{display:flex;align-items:center;gap:6px;border:1px solid #d9b27e;border-radius:99px;background:linear-gradient(135deg,#74518a,#4b345d);color:#fff0d5;padding:8px 12px;font-size:12px;font-weight:800;white-space:nowrap}
+.musicDock button.playing{background:linear-gradient(135deg,#b17b9d,#795a9c);box-shadow:0 0 18px #d7a8ef55}
+.musicDock button span:first-child{font-size:16px}
+.musicDock label{display:flex;align-items:center;gap:5px;color:#ead8ef;font-size:11px;white-space:nowrap}
+.musicDock input{width:76px;accent-color:#e8c28c;cursor:pointer}
+.musicDock small{color:#d8c2e0;font-size:10px;min-width:66px}
+.galleryDisplayBoard{background:linear-gradient(145deg,#fff2dc,#ead8ef);border:1px solid #d9b98d;border-radius:18px;padding:13px;margin:12px 0;color:#4a3150;box-shadow:0 8px 22px #1a0d2818}
+.galleryDisplayHead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.galleryDisplayHead b{font-size:15px}.galleryDisplayHead small{font-size:11px;color:#806b86}
+.galleryDisplaySlots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.galleryDisplaySlot{min-width:0;min-height:125px;background:#fffaf2;border:1px solid #ddc7df;border-radius:14px;padding:8px 5px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden}
+.galleryDisplaySlot .galleryDisplayArt{width:100%;height:65px;display:grid;place-items:center;overflow:hidden}.galleryDisplaySlot .galleryDisplayArt img{max-width:100%;max-height:62px;object-fit:contain}
+.galleryDisplaySlot b{font-size:11px;line-height:1.3}.galleryDisplaySlot small{font-size:10px;color:#806b86}.galleryDisplaySlot button{background:#76518a;color:#fff;border-radius:99px;padding:5px 9px;font-size:10px;margin-top:2px}.galleryDisplaySlot.empty{border-style:dashed;color:#a58eaa}.galleryDisplaySlot.empty span{font-size:26px;color:#b58bc4}
+.galleryDisplayToggle{background:linear-gradient(145deg,#f5d9a4,#d5a4d0);color:#49314f;border:1px solid #c79b83;border-radius:99px;padding:9px 13px;font-weight:800;margin:7px 0}.galleryDisplayToggle:disabled{opacity:.5}
+.galleryDiscovery{background:linear-gradient(135deg,#f7eddb,#f0e2f4);border-left:3px solid #bd8bc7;border-radius:12px;padding:10px 12px;margin:10px 0;color:#50375b}.galleryDiscovery small{display:block;color:#8a6b91;font-size:11px}.galleryDiscovery b{display:block;margin:4px 0}.galleryDiscovery p{margin:0;font-size:12px;line-height:1.6}
+@media(max-width:760px){.musicDock{order:3;width:100%;justify-content:space-between}.musicDock input{width:90px}.topbar{align-items:flex-start}}
+@media(max-width:520px){.galleryDisplaySlots{gap:5px}.galleryDisplaySlot{min-height:115px;padding:6px 3px}.galleryDisplayHead{display:block}.galleryDisplayHead small{display:block;margin-top:4px}}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
  <div class="brand"><div class="logo">🌙</div><div><h1>不太灵的女巫</h1><small>月光工坊 · 慢慢创造一点小奇迹</small></div></div>
+ <div class="musicDock"><button type="button" id="musicToggleBtn" onclick="toggleMusic()" aria-label="开启或关闭背景音乐"><span id="musicIcon">♫</span><span id="musicButtonText">开启童话音乐</span></button><label>音量 <input id="musicVolume" type="range" min="0" max="100" step="1" value="45" oninput="setMusicVolume(this.value)" aria-label="背景音乐音量"></label><small id="musicStatus">音乐已关闭</small></div>
  <div class="resources"><div class="resource">💗 <b id="energy">12</b>/12</div><div class="resource">🪙 <b id="coins">120</b></div><div class="resource">✨ Lv.<b id="level">1</b></div></div>
 </header>
 <div class="shell">
@@ -783,7 +804,7 @@ const visitors=[
  {id:"fox",name:"栗子狐狸",e:"🦊",ask:"我想在森林夜路上挂一盏星星灯，你能帮我做一盏吗？",recipe:"star",reward:42,thanks:"太漂亮啦！我会把它挂在回家的树枝上。"},
  {id:"owl",name:"咕咕猫头鹰",e:"🦉",ask:"我想送朋友一份甜甜的礼物，有暖暖蜜露吗？",recipe:"honey",reward:30,thanks:"这份甜味让我想起了很久以前的家。"}
 ];
-const defaults={bag:{mush:3,crystal:2,flower:2,firefly:1,feather:1,honey:2},crafted:{},found:[],gallery:{favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{}},coins:120,energy:12,xp:0,level:1,decor:[],activeDecor:[],visitorDone:[],tasks:{gather:0,craft:0,visit:0},lastDay:new Date().toDateString(),selected:"moon",catLove:0,catGiftDay:"",affection:0,claimed:{gather:false,craft:false,visit:false},shopOwned:[],activeSkin:"default",lastVisitAt:Date.now(),welcomeMessage:"",furniturePositions:{},soundOn:false,craftQuality:"",catMood:"idle",catLine:"喵～今天也要做点神奇的东西吗？",catActions:{pet:false,play:false,nap:false,treat:false},catBondTitle:"初次相遇",catMoment:{day:"",choice:"",claimed:false},research:{unlocked:[],completed:{}},townVisited:[],townStory:[],townDaily:{garden:"",star:"",wish:""},gardenBeds:[null,null,null],gardenWeather:{day:"",kind:"mist"},gardenStock:{moonbell:0,dreammush:0,starlily:0},gardenOrder:{day:"",crop:"",qty:0,reward:0,claimed:false},townUnlocked:["cottage","forest","shop","board","garden","observatory","tree"],forest:{steps:0,discoveries:[],log:[],event:null,trailMarks:0,treasureClaimed:false,lastChestCycle:0,areas:["mushroom_path"],rareFinds:[],spriteFriend:false,friends:[],friendVisitDay:"",friendVisits:{},bonds:{},interactDay:{}},
+const defaults={bag:{mush:3,crystal:2,flower:2,firefly:1,feather:1,honey:2},crafted:{},found:[],gallery:{favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{}},coins:120,energy:12,xp:0,level:1,decor:[],activeDecor:[],visitorDone:[],tasks:{gather:0,craft:0,visit:0},lastDay:new Date().toDateString(),selected:"moon",catLove:0,catGiftDay:"",affection:0,claimed:{gather:false,craft:false,visit:false},shopOwned:[],activeSkin:"default",lastVisitAt:Date.now(),welcomeMessage:"",furniturePositions:{},soundOn:false,musicOn:false,musicVolume:45,craftQuality:"",catMood:"idle",catLine:"喵～今天也要做点神奇的东西吗？",catActions:{pet:false,play:false,nap:false,treat:false},catBondTitle:"初次相遇",catMoment:{day:"",choice:"",claimed:false},research:{unlocked:[],completed:{}},townVisited:[],townStory:[],townDaily:{garden:"",star:"",wish:""},gardenBeds:[null,null,null],gardenWeather:{day:"",kind:"mist"},gardenStock:{moonbell:0,dreammush:0,starlily:0},gardenOrder:{day:"",crop:"",qty:0,reward:0,claimed:false},townUnlocked:["cottage","forest","shop","board","garden","observatory","tree"],forest:{steps:0,discoveries:[],log:[],event:null,trailMarks:0,treasureClaimed:false,lastChestCycle:0,areas:["mushroom_path"],rareFinds:[],spriteFriend:false,friends:[],friendVisitDay:"",friendVisits:{},bonds:{},interactDay:{}},
  wardrobeOwned:["starter_hat"],equippedWearables:{hat:"starter_hat",cape:"",wand:"",cat:"",costume:"blossom_robe"},houseTier:1,
  residentStory:{stage:0,choices:[],keepsake:false},
  catMilestones:[],cozyMoments:{day:"",done:[]},luluRoutine:"idle",tutorial:{step:0,done:false}};
@@ -791,7 +812,7 @@ const hasPriorSave=!!safeStorageRead("moonlightV3");
 function safeStorageRead(key){try{return localStorage.getItem(key)}catch(e){return null}}
 let saveWarningShown=false;
 let s=load(),scene="home",craftStep=0,selected=recipes[0],activeVisitor=visitors[0],toastTimer;
-function load(){try{let old=JSON.parse(safeStorageRead("moonlightV3")||"{}");if(Object.keys(old).length)validateSaveData(old);let merged={...defaults,...old};merged.tasks={...defaults.tasks,...(old.tasks||{})};merged.claimed={...defaults.claimed,...(old.claimed||{})};merged.shopOwned=old.shopOwned||[];merged.affection=old.affection||0;merged.lastVisitAt=old.lastVisitAt||Date.now();merged.welcomeMessage=old.welcomeMessage||"";merged.furniturePositions=old.furniturePositions||{};merged.soundOn=false;merged.craftQuality="";merged.catMood=old.catMood||"idle";merged.catLine=old.catLine||"喵～今天也要做点神奇的东西吗？";merged.catActions={pet:false,play:false,nap:false,treat:false,...(old.catActions||{})};merged.catBondTitle=old.catBondTitle||"初次相遇";merged.catMoment={day:"",choice:"",claimed:false,...(old.catMoment||{})};merged.research={unlocked:[],completed:{},...(old.research||{})};merged.townVisited=old.townVisited||[];merged.townStory=old.townStory||[];merged.townDaily=old.townDaily||{garden:"",star:"",wish:""};merged.gardenBeds=Array.isArray(old.gardenBeds)?old.gardenBeds:[null,null,null];merged.gardenWeather=old.gardenWeather||{day:"",kind:"mist"};merged.gardenStock={...defaults.gardenStock,...(old.gardenStock||{})};merged.gardenOrder={...defaults.gardenOrder,...(old.gardenOrder||{})};merged.townUnlocked=old.townUnlocked||["cottage","forest","shop","board","garden","observatory","tree"];merged.gallery={favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{},...(old.gallery||{})};merged.gallery.variants=old.gallery?.variants||{};merged.gallery.variantDisplay=old.gallery?.variantDisplay||{};merged.forest={...defaults.forest,...(old.forest||{})};
+function load(){try{let old=JSON.parse(safeStorageRead("moonlightV3")||"{}");if(Object.keys(old).length)validateSaveData(old);let merged={...defaults,...old};merged.tasks={...defaults.tasks,...(old.tasks||{})};merged.claimed={...defaults.claimed,...(old.claimed||{})};merged.shopOwned=old.shopOwned||[];merged.affection=old.affection||0;merged.lastVisitAt=old.lastVisitAt||Date.now();merged.welcomeMessage=old.welcomeMessage||"";merged.furniturePositions=old.furniturePositions||{};merged.soundOn=false;merged.musicOn=false;merged.musicVolume=Number.isFinite(Number(old.musicVolume))?Math.max(0,Math.min(100,Number(old.musicVolume))):45;merged.craftQuality="";merged.catMood=old.catMood||"idle";merged.catLine=old.catLine||"喵～今天也要做点神奇的东西吗？";merged.catActions={pet:false,play:false,nap:false,treat:false,...(old.catActions||{})};merged.catBondTitle=old.catBondTitle||"初次相遇";merged.catMoment={day:"",choice:"",claimed:false,...(old.catMoment||{})};merged.research={unlocked:[],completed:{},...(old.research||{})};merged.townVisited=old.townVisited||[];merged.townStory=old.townStory||[];merged.townDaily=old.townDaily||{garden:"",star:"",wish:""};merged.gardenBeds=Array.isArray(old.gardenBeds)?old.gardenBeds:[null,null,null];merged.gardenWeather=old.gardenWeather||{day:"",kind:"mist"};merged.gardenStock={...defaults.gardenStock,...(old.gardenStock||{})};merged.gardenOrder={...defaults.gardenOrder,...(old.gardenOrder||{})};merged.townUnlocked=old.townUnlocked||["cottage","forest","shop","board","garden","observatory","tree"];merged.gallery={favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{},...(old.gallery||{})};merged.gallery.variants=old.gallery?.variants||{};merged.gallery.variantDisplay=old.gallery?.variantDisplay||{};const rawDisplaySlots=Array.isArray(old.gallery?.displaySlots)?old.gallery.displaySlots:[];const usedDisplayIds=new Set();merged.gallery.displaySlots=[0,1,2].map(i=>{const id=rawDisplaySlots[i];if(typeof id==="string"&&merged.found.includes(id)&&!usedDisplayIds.has(id)){usedDisplayIds.add(id);return id;}return null;});merged.forest={...defaults.forest,...(old.forest||{})};
  merged.forest.areas=old.forest?.areas||["mushroom_path"];
  merged.forest.lastChestCycle=Number.isFinite(Number(old.forest?.lastChestCycle))?Number(old.forest.lastChestCycle):(old.forest?.treasureClaimed?Math.floor((old.forest.steps||0)/5):0);
  merged.forest.rareFinds=old.forest?.rareFinds||[];
@@ -1529,7 +1550,19 @@ const galleryLore={
  star:"把一小片星空装进灯里，走夜路的人就不再害怕。",
  honey:"蜂蜜里藏着午后的阳光，连雨声也变得暖和。",
  night:"有人说，瓶底会映出一只偷偷散步的黑猫。墨团对此保持沉默。",
- seed:"种下去的不是种子，是一个尚未发生的小小奇迹。"};
+ seed:"种下去的不是种子，是一个尚未发生的小小奇迹。",
+ dawncharm:"晨雾还未散去，月芽把第一缕晨光封进护符。星角鹿轻轻低下头，像是在把勇气交给每一个即将出发的人。",
+ mosslamp:"古树的苔藓在掌心亮了起来。墨团没有伸爪，只安静地陪着月芽，看那盏小灯把森林的夜路照得温柔。"};
+const galleryDiscovery={
+ moon:{title:"月光瓶里的第一首歌",text:"坩埚第一次回应月芽的心愿，瓶口浮起一圈柔软的银光。"},
+ dream:{title:"花瓣寄来的梦",text:"梦境花的香气散开时，一片小小花瓣停在月芽肩头，像是替某个朋友送来祝福。"},
+ star:{title:"把星空收进口袋",text:"一颗星星落进玻璃瓶，夜路从此多了一盏不会催人赶路的小灯。"},
+ honey:{title:"午后的一点甜",text:"墨团闻到暖暖蜜露的香气，悄悄把尾巴绕在瓶子旁边，连阴天也变得明亮。"},
+ night:{title:"黑猫留下的秘密",text:"瓶中闪过一抹熟悉的猫影。墨团假装什么也没发生，却把它守在了收藏架最靠里的位置。"},
+ seed:{title:"尚未发生的小小奇迹",text:"种子落在掌心时轻轻跳了一下。月芽相信，总有一天它会长成一片会发光的花园。"},
+ dawncharm:{title:"清晨交给旅人的勇气",text:"晨露在护符边缘凝成微光。星角鹿轻轻碰了碰它，森林深处仿佛亮起一条新的路。"},
+ mosslamp:{title:"古树醒来的灯火",text:"苔光从古树根部慢慢亮起，墨团第一次主动走在月芽前面，为她照亮回家的路。"}
+};
 const magicVariants=[
  {id:"aurora",name:"极光微光",icon:"✧",line:"瓶身掠过一丝青蓝色的极光。"},
  {id:"blossom",name:"花瓣祝福",icon:"❀",line:"一片发光花瓣轻轻落在作品旁。"},
@@ -1560,15 +1593,55 @@ function galleryChooseVariant(id,variantId){
 function galleryFavorite(id){if(!s.found.includes(id))return;s.gallery.favorite=s.gallery.favorite===id?"":id;save();collectionPanel();toast(s.gallery.favorite?"♡ 已放到心爱展台":"已取消心爱展台")}
 function gallerySelect(id){window.gallerySelected=id;collectionPanel()}
 function galleryNote(id){if(!s.found.includes(id))return;const el=document.getElementById('galleryNote');if(!el)return;s.gallery.notes[id]=el.value.slice(0,100);save();toast('✎ 收藏心情已保存')}
-function galleryMilestones(){const n=s.found.length;return [{at:1,title:'初次魔法',desc:'第一次亲手做出魔法作品'},{at:3,title:'微光收藏家',desc:'收集三种不同的作品'},{at:6,title:'月光收藏家',desc:'集齐六种魔法作品'}].map(m=>`<div class="galleryMilestone ${n>=m.at?'done':''}"><span>${n>=m.at?'✦':'◇'}</span><div><b>${m.title}</b><small>${m.desc}</small></div><em>${n>=m.at?'已达成':n+'/'+m.at}</em></div>`).join('')}
+function galleryMilestones(){
+ const n=s.found.length;
+ const milestones=[
+  {at:1,title:"初次魔法",desc:"第一次亲手做出魔法作品"},
+  {at:3,title:"微光收藏家",desc:"收集三种不同的作品"},
+  {at:6,title:"月光收藏家",desc:"集齐六种基础魔法作品"},
+  {at:8,title:"秘法典藏家",desc:"发现全部八种魔法作品，包括研究配方"}
+ ];
+ return milestones.map(m=>'<div class="galleryMilestone '+(n>=m.at?'done':'')+'"><span>'+(n>=m.at?'✦':'◇')+'</span><div><b>'+m.title+'</b><small>'+m.desc+'</small></div><em>'+(n>=m.at?'已达成':n+'/'+m.at)+'</em></div>').join('');
+}
+function galleryDisplayBoard(catalog){
+ const slots=Array.isArray(s.gallery.displaySlots)?s.gallery.displaySlots:[null,null,null];
+ let html='<div class="galleryDisplayBoard"><div class="galleryDisplayHead"><b>✦ 月光陈列台</b><small>把最珍爱的三件作品摆出来，来访的朋友也能看见</small></div><div class="galleryDisplaySlots">';
+ for(let i=0;i<3;i++){
+  const item=catalog.find(r=>r.id===slots[i]&&s.found.includes(r.id));
+  if(item){
+   html+='<div class="galleryDisplaySlot filled">'+variantArtwork(item.id,s.gallery.variantDisplay[item.id]||"normal","galleryDisplayArt")+'<b>'+item.name+'</b><small>第 '+(i+1)+' 展位</small><button onclick="galleryToggleDisplay(\''+item.id+'\')">从展台收起</button></div>';
+  }else{
+   html+='<div class="galleryDisplaySlot empty"><span>✧</span><b>空展位</b><small>从下方收藏中选择</small></div>';
+  }
+ }
+ return html+'</div></div>';
+}
+function galleryToggleDisplay(id){
+ if(!s.found.includes(id))return;
+ s.gallery=s.gallery||{};
+ const slots=Array.isArray(s.gallery.displaySlots)?s.gallery.displaySlots.slice(0,3):[null,null,null];
+ while(slots.length<3)slots.push(null);
+ const at=slots.indexOf(id);
+ if(at>=0){slots[at]=null;s.gallery.displaySlots=slots;save();collectionPanel();toast("已将作品收回收藏架");return;}
+ const empty=slots.indexOf(null);
+ if(empty<0){toast("三个展位都摆满啦，先收起一件再布置吧");return;}
+ slots[empty]=id;s.gallery.displaySlots=slots;save();collectionPanel();toast("✦ 已摆上月光陈列台");
+}
 function collectionPanel(){
- const known=recipes.filter(r=>s.found.includes(r.id));
- const chosen=recipes.find(r=>r.id===window.gallerySelected&&s.found.includes(r.id))||recipes.find(r=>r.id===s.gallery.favorite&&s.found.includes(r.id))||known[0];
- const total=recipes.reduce((a,r)=>a+(s.crafted[r.id]||0),0);
- panel('📖 月光收藏馆',`发现 ${known.length}/${recipes.length} 种 · 共制作 ${total} 件作品`,
- `<div class="galleryIntro">每件作品都有自己的故事。挑一件最喜欢的，放到心爱展台吧。</div>
- <div class="galleryShelf">${recipes.map(r=>{const found=s.found.includes(r.id);return `<button class="galleryObject ${found?'':'locked'} ${chosen&&chosen.id===r.id?'active':''}" ${found?`onclick="gallerySelect('${r.id}')"`:''} ${found?'':'disabled'}><div class="galleryFrame">${found?variantArtwork(r.id,s.gallery.variantDisplay[r.id]||'normal','galleryArtVariant'):'<span class="galleryUnknown">✧</span>'}</div><b>${found?r.name:'神秘作品'}</b><small>${found?'制作 '+(s.crafted[r.id]||0)+' 件 · '+variantList(r.id).length+'/3 种光彩':'尚未发现'}</small>${s.gallery.favorite===r.id&&found?'<span class="galleryHeart">♥</span>':''}</button>`}).join('')}</div>
- ${chosen?`<div class="galleryDetail"><div class="galleryFeature">${variantArtwork(chosen.id,s.gallery.variantDisplay[chosen.id]||'normal','galleryFeaturedVariant')}</div><div class="galleryStory"><small>${chosen.rare?'✦ 稀有魔法作品':'✧ 温柔魔法作品'}</small><h3>${chosen.name}</h3><p>${galleryLore[chosen.id]}</p><div class="variantCollection"><b>✦ 魔法光彩 ${variantList(chosen.id).length}/3</b><div class="variantChips"><button class="variantPick ${(s.gallery.variantDisplay[chosen.id]||'normal')==='normal'?'selected':''}" onclick="galleryChooseVariant('${chosen.id}','normal')">◯ 原始外观</button>${magicVariants.map(v=>`<button class="variantPick ${variantList(chosen.id).includes(v.id)?'unlocked':'locked'} ${(s.gallery.variantDisplay[chosen.id]||'normal')===v.id?'selected':''}" ${variantList(chosen.id).includes(v.id)?`onclick="galleryChooseVariant('${chosen.id}','${v.id}')"`:'disabled'}>${variantList(chosen.id).includes(v.id)?v.icon:'◇'} ${variantList(chosen.id).includes(v.id)?v.name:'尚未发现'}</button>`).join('')}</div><small>点击已发现的光彩，可以直接欣赏不同的视觉效果。每次制作有18%概率出现特殊光彩。</small></div><p class="galleryCount">已制作 ${s.crafted[chosen.id]||0} 件 · ${s.gallery.favorite===chosen.id?'♡ 心爱展台':'尚未设为心爱作品'}</p><button class="galleryFav" onclick="galleryFavorite('${chosen.id}')">${s.gallery.favorite===chosen.id?'♥ 从心爱展台取下':'♡ 放到心爱展台'}</button><label for="galleryNote">写下一句收藏心情（最多100字）</label><textarea id="galleryNote" maxlength="100" placeholder="这件作品让我想起……">${(s.gallery.notes[chosen.id]||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea><button class="gallerySave" onclick="galleryNote('${chosen.id}')">保存这段回忆</button></div></div>`:`<div class="galleryEmpty">✦ 第一件作品还在等你诞生。<button onclick="setScene('craft')">去魔法工坊</button></div>`}
+ const catalog=allRecipes();
+ const known=catalog.filter(r=>s.found.includes(r.id));
+ const chosen=catalog.find(r=>r.id===window.gallerySelected&&s.found.includes(r.id))||catalog.find(r=>r.id===s.gallery.favorite&&s.found.includes(r.id))||known[0];
+ const total=catalog.reduce((a,r)=>a+(s.crafted[r.id]||0),0);
+ const discovery=chosen?galleryDiscovery[chosen.id]:null;
+ const discoveredAt=chosen&&s.gallery.firstSeen?.[chosen.id]?new Date(s.gallery.firstSeen[chosen.id]).toLocaleDateString("zh-CN"):"此前已收藏";
+ const displaySlots=Array.isArray(s.gallery.displaySlots)?s.gallery.displaySlots:[null,null,null];
+ const onDisplay=chosen?displaySlots.includes(chosen.id):false;
+ const hasEmptyDisplay=displaySlots.length<3||displaySlots.slice(0,3).includes(null);
+ panel('📖 月光收藏馆',`发现 ${known.length}/${catalog.length} 种 · 共制作 ${total} 件作品`,
+ `<div class="galleryIntro">每件作品都有自己的故事。为它们记录初见的日子，也可以挑选三件放到月光陈列台。</div>
+ ${galleryDisplayBoard(catalog)}
+ <div class="galleryShelf">${catalog.map(r=>{const found=s.found.includes(r.id);return `<button class="galleryObject ${found?'':'locked'} ${chosen&&chosen.id===r.id?'active':''}" ${found?`onclick="gallerySelect('${r.id}')"`:''} ${found?'':'disabled'}><div class="galleryFrame">${found?variantArtwork(r.id,s.gallery.variantDisplay[r.id]||'normal','galleryArtVariant'):'<span class="galleryUnknown">✧</span>'}</div><b>${found?r.name:'神秘作品'}</b><small>${found?'制作 '+(s.crafted[r.id]||0)+' 件 · '+variantList(r.id).length+'/3 种光彩':'尚未发现'}</small>${s.gallery.favorite===r.id&&found?'<span class="galleryHeart">♥</span>':''}</button>`}).join('')}</div>
+ ${chosen?`<div class="galleryDetail"><div class="galleryFeature">${variantArtwork(chosen.id,s.gallery.variantDisplay[chosen.id]||'normal','galleryFeaturedVariant')}</div><div class="galleryStory"><small>${chosen.rare?'✦ 稀有魔法作品':'✧ 温柔魔法作品'}</small><h3>${chosen.name}</h3><p>${galleryLore[chosen.id]||chosen.desc}</p><div class="galleryDiscovery"><small>✦ 初见记录 · ${discoveredAt}</small><b>${discovery?discovery.title:"这件作品的故事"}</b><p>${discovery?discovery.text:chosen.desc}</p></div><div class="variantCollection"><b>✦ 魔法光彩 ${variantList(chosen.id).length}/3</b><div class="variantChips"><button class="variantPick ${(s.gallery.variantDisplay[chosen.id]||'normal')==='normal'?'selected':''}" onclick="galleryChooseVariant('${chosen.id}','normal')">◯ 原始外观</button>${magicVariants.map(v=>`<button class="variantPick ${variantList(chosen.id).includes(v.id)?'unlocked':'locked'} ${(s.gallery.variantDisplay[chosen.id]||'normal')===v.id?'selected':''}" ${variantList(chosen.id).includes(v.id)?`onclick="galleryChooseVariant('${chosen.id}','${v.id}')"`:'disabled'}>${variantList(chosen.id).includes(v.id)?v.icon:'◇'} ${variantList(chosen.id).includes(v.id)?v.name:'尚未发现'}</button>`).join('')}</div><small>点击已发现的光彩，可以直接欣赏不同的视觉效果。每次制作有18%概率出现特殊光彩。</small></div><p class="galleryCount">已制作 ${s.crafted[chosen.id]||0} 件 · ${s.gallery.favorite===chosen.id?'♡ 心爱展台':'尚未设为心爱作品'}</p><button class="galleryFav" onclick="galleryFavorite('${chosen.id}')">${s.gallery.favorite===chosen.id?'♥ 从心爱展台取下':'♡ 放到心爱展台'}</button><button class="galleryDisplayToggle" onclick="galleryToggleDisplay('${chosen.id}')" ${onDisplay?"":hasEmptyDisplay?"":"disabled"}>${onDisplay?"从月光陈列台收起":hasEmptyDisplay?"摆上月光陈列台":"展台已满（先收起一件）"}</button><label for="galleryNote">写下一句收藏心情（最多100字）</label><textarea id="galleryNote" maxlength="100" placeholder="这件作品让我想起……">${(s.gallery.notes[chosen.id]||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea><button class="gallerySave" onclick="galleryNote('${chosen.id}')">保存这段回忆</button></div></div>`:`<div class="galleryEmpty">✦ 第一件作品还在等你诞生。<button onclick="setScene('craft')">去魔法工坊</button></div>`}
  <div class="galleryGoals"><b>✦ 收藏里程碑</b>${galleryMilestones()}</div><div class="actionRow"><button class="softBtn" onclick="setScene('craft')">🫕 再做一件魔法作品</button></div>`);
 }
 function getWorldTime(){
@@ -1584,7 +1657,132 @@ function ensureSaveTools(){
  el.innerHTML='<span>本地存档</span><button type="button" onclick="exportSave()">导出备份</button><label>导入备份<input type="file" accept="application/json,.json" onchange="importSaveFile(this)"></label><button type="button" onclick="restorePreviousSave()">恢复导入前</button><button type="button" onclick="restoreBeforeRestore()">撤销上次恢复</button><button type="button" onclick="exportRawRecovery()">导出异常旧档</button>';
  document.body.appendChild(el);
 }
+
+const musicThemes={
+ home:{bpm:64,chords:[[57,60,64,67],[53,57,60,64],[55,59,62,65],[52,55,59,62]],melody:[76,72,67,69,72,76,79,76,72,69,67,64,67,72,69,64],sparkle:[88,91,88,84]},
+ forest:{bpm:58,chords:[[50,53,57,60],[46,50,53,57],[48,51,55,58],[45,48,52,55]],melody:[74,77,81,79,74,72,77,81,84,81,77,74,72,69,74,77],sparkle:[86,89,93,89]},
+ workshop:{bpm:70,chords:[[60,64,67,71],[57,60,64,67],[53,57,60,64],[55,59,62,67]],melody:[79,84,83,79,76,79,84,88,86,83,79,76,74,79,83,84],sparkle:[91,88,84,86]},
+ story:{bpm:54,chords:[[53,57,60,64],[50,53,57,60],[48,52,55,59],[45,48,52,55]],melody:[76,72,69,72,77,81,79,76,72,69,67,72,76,79,81,77],sparkle:[88,91,96,91]}
+};
+let musicCtx=null,musicMaster=null,musicDelay=null,musicDelayFilter=null,musicFeedback=null,musicWet=null;
+let musicPlaying=false,musicLoopTimer=null,musicLoopIndex=0,musicCurrentScene="home";
+let musicNodes=new Set();
+function musicThemeForScene(v){
+ if(v==="grove"||v==="forestEvent"||v==="bestiary"||v==="habitat")return "forest";
+ if(v==="craft")return "workshop";
+ if(v==="observatory"||v==="wish"||v==="journal"||v==="resident")return "story";
+ return "home";
+}
+function musicThemeName(){
+ return ({home:"小屋 · 温柔八音盒",forest:"森林 · 神秘星雾",workshop:"工坊 · 魔法铃音",story:"星夜 · 童话叙事"})[musicCurrentScene]||"童话旋律";
+}
+function syncMusicScene(v){
+ const next=musicThemeForScene(v);
+ if(next!==musicCurrentScene){musicCurrentScene=next;updateMusicUI();}
+}
+function updateMusicUI(){
+ const btn=$("musicToggleBtn");if(!btn)return;
+ btn.classList.toggle("playing",musicPlaying);
+ $("musicIcon").textContent=musicPlaying?"♫":"♪";
+ $("musicButtonText").textContent=musicPlaying?"关闭音乐":"开启童话音乐";
+ $("musicStatus").textContent=musicPlaying?musicThemeName():"音乐已关闭";
+ const slider=$("musicVolume");if(slider)slider.value=String(s.musicVolume===undefined?45:s.musicVolume);
+}
+function createMusicEngine(){
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return false;
+ musicCtx=new AC();
+ musicMaster=musicCtx.createGain();musicMaster.gain.value=0;musicMaster.connect(musicCtx.destination);
+ musicDelay=musicCtx.createDelay(1);musicDelay.delayTime.value=.38;
+ musicDelayFilter=musicCtx.createBiquadFilter();musicDelayFilter.type="lowpass";musicDelayFilter.frequency.value=1900;
+ musicFeedback=musicCtx.createGain();musicFeedback.gain.value=.17;
+ musicWet=musicCtx.createGain();musicWet.gain.value=.22;
+ musicDelay.connect(musicDelayFilter);musicDelayFilter.connect(musicFeedback);musicFeedback.connect(musicDelay);
+ musicDelayFilter.connect(musicWet);musicWet.connect(musicMaster);
+ return true;
+}
+function musicMidi(midi){return 440*Math.pow(2,(midi-69)/12);}
+function trackMusicNode(osc){
+ musicNodes.add(osc);
+ osc.onended=()=>{musicNodes.delete(osc);try{osc.disconnect();}catch(e){}};
+}
+function musicPluck(midi,at,duration,peak){
+ if(!musicCtx||!musicMaster)return;
+ const osc=musicCtx.createOscillator(),filter=musicCtx.createBiquadFilter(),gain=musicCtx.createGain();
+ osc.type="sine";osc.frequency.setValueAtTime(musicMidi(midi),at);
+ filter.type="lowpass";filter.frequency.setValueAtTime(2600,at);filter.Q.value=.55;
+ gain.gain.setValueAtTime(.0001,at);
+ gain.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),at+.035);
+ gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+ osc.connect(filter);filter.connect(gain);gain.connect(musicMaster);gain.connect(musicDelay);
+ trackMusicNode(osc);osc.start(at);osc.stop(at+duration+.04);
+}
+function musicPad(notes,at,duration){
+ if(!musicCtx||!musicMaster)return;
+ notes.forEach((midi,index)=>{
+  const osc=musicCtx.createOscillator(),filter=musicCtx.createBiquadFilter(),gain=musicCtx.createGain();
+  osc.type=index===0?"triangle":"sine";
+  osc.frequency.setValueAtTime(musicMidi(midi),at);
+  if(index===3)osc.detune.setValueAtTime(-4,at);
+  filter.type="lowpass";filter.frequency.setValueAtTime(1000,at);
+  gain.gain.setValueAtTime(.0001,at);
+  gain.gain.linearRampToValueAtTime(index===0?.006:.004,at+.65);
+  gain.gain.setValueAtTime(index===0?.006:.004,at+Math.max(.7,duration-.65));
+  gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  osc.connect(filter);filter.connect(gain);gain.connect(musicMaster);gain.connect(musicDelay);
+  trackMusicNode(osc);osc.start(at);osc.stop(at+duration+.04);
+ });
+}
+function scheduleMusicLoop(){
+ if(!musicPlaying||!musicCtx)return;
+ const theme=musicThemes[musicCurrentScene]||musicThemes.home;
+ const beat=60/theme.bpm,start=musicCtx.currentTime+.12;
+ theme.chords.forEach((chord,index)=>musicPad(chord,start+index*2*beat,2.2*beat));
+ for(let i=0;i<8;i++){
+  const note=theme.melody[(musicLoopIndex*8+i)%theme.melody.length];
+  musicPluck(note,start+(i+.45)*beat,1.15*beat,i===6?.022:.016);
+ }
+ if(musicLoopIndex%2===0){
+  const sparkle=theme.sparkle[musicLoopIndex%theme.sparkle.length];
+  musicPluck(sparkle,start+6.7*beat,1.8*beat,.009);
+ }
+ musicLoopIndex++;
+ musicLoopTimer=setTimeout(scheduleMusicLoop,Math.max(1200,8*beat*1000-160));
+}
+function stopMusicVoices(){
+ musicNodes.forEach(node=>{try{node.stop(musicCtx.currentTime+.025);}catch(e){}});
+ musicNodes.clear();
+}
+async function toggleMusic(){
+ if(musicPlaying){
+  musicPlaying=false;clearTimeout(musicLoopTimer);musicLoopTimer=null;
+  if(musicCtx&&musicMaster){const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);musicMaster.gain.setTargetAtTime(0,now,.12);setTimeout(stopMusicVoices,260);}
+  s.musicOn=false;save();updateMusicUI();toast("童话音乐已轻轻停下");return;
+ }
+ if(!musicCtx&&!createMusicEngine()){toast("当前浏览器不支持背景音乐");return;}
+ try{
+  await musicCtx.resume();
+  musicPlaying=true;s.musicOn=true;save();
+  const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);
+  musicMaster.gain.setValueAtTime(musicMaster.gain.value,now);
+  musicMaster.gain.linearRampToValueAtTime((Number(s.musicVolume)||45)/100*.19,now+1.3);
+  musicLoopIndex=0;scheduleMusicLoop();updateMusicUI();
+  toast("🌙 月光旋律开始了");
+ }catch(e){musicPlaying=false;s.musicOn=false;updateMusicUI();toast("音乐暂时无法播放，请再试一次");}
+}
+function setMusicVolume(value){
+ const n=Math.max(0,Math.min(100,Number(value)||0));s.musicVolume=n;save();
+ if(musicPlaying&&musicCtx&&musicMaster){const now=musicCtx.currentTime;musicMaster.gain.cancelScheduledValues(now);musicMaster.gain.setTargetAtTime(n/100*.19,now,.08);}
+ updateMusicUI();
+}
+function playMagicChime(){
+ if(!musicPlaying||!musicCtx)return;
+ const at=musicCtx.currentTime+.03;
+ [84,88,91,96].forEach((note,index)=>musicPluck(note,at+index*.12,1.25,.018-index*.002));
+}
+
 function renderScene(){
+ syncMusicScene(scene);updateMusicUI();
  ensureSaveTools();
  let st=$("stage");
  const worldTime=getWorldTime();
@@ -1707,7 +1905,7 @@ function mix(){
  if(craftStep<3){toast(["✨ 第一缕星光苏醒了……","🌈 魔法正在坩埚中汇聚……"][craftStep-1]);renderScene();return}
  Object.entries(r.need).forEach(([id,n])=>s.bag[id]-=n);
  s.crafted[r.id]=(s.crafted[r.id]||0)+1;
- let first=!s.found.includes(r.id);if(first)s.found.push(r.id);
+ let first=!s.found.includes(r.id);if(first){s.found.push(r.id);s.gallery=s.gallery||{};s.gallery.firstSeen=s.gallery.firstSeen||{};s.gallery.firstSeen[r.id]=new Date().toISOString();}
  s.tasks.craft++;s.coins+=first?18:8;addXP(first?22:12);
  if(s.tutorial&&!s.tutorial.done&&s.tutorial.step===1){
   s.tutorial.step=2;
@@ -1715,10 +1913,11 @@ function mix(){
  }
  let perfect=mixPerfect>=2;
  const variant=craftVariantRoll({...r,id:r.artId||r.id});
+ if(first||variant)playMagicChime();
  $("rewardIcon").innerHTML=craftArt(r.artId||r.id,"revealArtwork");
  $("rewardTitle").textContent=perfect?"✨ 完美魔法！":first?"✨ 发现新配方！":"🌟 魔法制作完成";
- $("rewardText").textContent=perfect?`节奏恰到好处！「${r.name}」闪耀着完美光芒，获得额外12枚星砂。`:
-  first?`你第一次制作出「${r.name}」！它已经被收入收藏馆。`:`「${r.name}」完成啦。你的收藏又丰富了一点。`;
+ $("rewardText").textContent=first?`你第一次制作出「${r.name}」！${galleryDiscovery[r.id]?.text||"它已经被收入收藏馆。"}`:
+  perfect?`节奏恰到好处！「${r.name}」闪耀着完美光芒，获得额外12枚星砂。`:`「${r.name}」完成啦。你的收藏又丰富了一点。`;
  if(perfect){s.coins+=12;addXP(8);}
  if(r.rare&&first){$("rewardTitle").textContent=perfect?"🌟 完美稀有发现！":"🌙 稀有魔法发现！";$("rewardText").textContent=`你发现了稀有配方「${r.name}」，坩埚里飞出了小小的星光。`;}
  if(variant){
