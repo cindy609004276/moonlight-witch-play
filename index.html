@@ -708,6 +708,33 @@ button:focus-visible,label:focus-within{outline:3px solid #ffdb92;outline-offset
 @media(max-width:760px){.musicDock{order:3;width:100%;justify-content:space-between}.musicDock input{width:90px}.topbar{align-items:flex-start}}
 @media(max-width:520px){.galleryDisplaySlots{gap:5px}.galleryDisplaySlot{min-height:115px;padding:6px 3px}.galleryDisplayHead{display:block}.galleryDisplayHead small{display:block;margin-top:4px}}
 
+
+/* V50 — living fairy-tale weather and ambient sound */
+.ambienceDock{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 10px;border:1px solid #8d9d9a;border-radius:16px;background:linear-gradient(135deg,#243a3bdd,#282039dd);box-shadow:0 5px 18px #10091b55}
+.ambienceDock button{display:flex;align-items:center;gap:6px;border:1px solid #b7d3b4;border-radius:99px;background:linear-gradient(135deg,#486b63,#334b4d);color:#eff8df;padding:8px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.ambienceDock button.playing{background:linear-gradient(135deg,#719b7c,#486b63);box-shadow:0 0 16px #a8e9b355}
+.ambienceDock button span:first-child{font-size:15px}
+.ambienceDock label{display:flex;align-items:center;gap:5px;color:#dce9d9;font-size:11px;white-space:nowrap}
+.ambienceDock input{width:70px;accent-color:#b8d9a9;cursor:pointer}
+.ambienceDock small{color:#d1e1d0;font-size:10px;min-width:70px}
+.worldAmbience.weather-mist .weatherParticles{opacity:.55;background:radial-gradient(ellipse at 18% 65%,#d8e9e966,transparent 40%),radial-gradient(ellipse at 72% 48%,#d9d1ff55,transparent 45%);filter:blur(14px);animation:mistDrift 15s ease-in-out infinite alternate}
+.worldAmbience.weather-clear .weatherParticles{opacity:.28;background-image:radial-gradient(circle,#fff2c9 0 1px,transparent 2px),radial-gradient(circle,#d7eaff 0 1px,transparent 2px);background-size:91px 83px,137px 121px;animation:clearTwinkle 5s ease-in-out infinite alternate}
+.worldAmbience.weather-rain .weatherParticles{opacity:.38;background-image:repeating-linear-gradient(108deg,transparent 0 25px,#dceaff77 26px 27px,transparent 28px 45px);background-size:85px 110px;animation:rainFall 1.25s linear infinite}
+.worldAmbience.weather-glow .weatherParticles{opacity:.82;background-image:radial-gradient(circle,#d9fff5 0 1.5px,transparent 3px),radial-gradient(circle,#f6d8ff 0 1.5px,transparent 3px),radial-gradient(circle,#ffe7a8 0 1px,transparent 3px);background-size:73px 91px,119px 137px,163px 111px;animation:glowDrift 10s ease-in-out infinite alternate}
+.worldAmbience.weather-mist .ambienceOrb{filter:blur(13px);opacity:.45}
+.worldAmbience.weather-glow .ambienceOrb{background:radial-gradient(circle,#f4ffcfcc 0 8%,#b6ffe877 40%,transparent 73%);filter:blur(1px)}
+.forestMagicLayer.weather-mist .forestMist{height:38%;opacity:.9;filter:blur(22px)}
+.forestMagicLayer.weather-clear .forestMist{opacity:.18}
+.forestMagicLayer.weather-rain .forestMist{opacity:.45}
+.forestMagicLayer.weather-glow .forestFireflies{opacity:.95;filter:drop-shadow(0 0 7px #b8ffe8)}
+.forestMagicLayer.weather-glow .forestButterflies span{color:#eaffd2;text-shadow:0 0 15px #caff8c,0 0 27px #a6ffe8}
+.ambienceCaption{max-width:88%;overflow:hidden;text-overflow:ellipsis}
+@keyframes mistDrift{from{background-position:0 0,20px 0;transform:translateX(-1%)}to{background-position:30px 0,-25px 0;transform:translateX(1%)}}
+@keyframes clearTwinkle{from{opacity:.12}to{opacity:.42}}
+@keyframes glowDrift{from{background-position:0 0,20px 30px,50px 10px;transform:translateY(0)}to{background-position:35px -25px,-15px 20px,80px -30px;transform:translateY(-5px)}}
+@media(max-width:760px){.ambienceDock{order:4;width:100%;justify-content:space-between}.ambienceDock input{width:82px}.musicDock{width:100%;justify-content:space-between}}
+@media(max-width:520px){.musicDock,.ambienceDock{gap:6px;padding:6px 8px}.musicDock small,.ambienceDock small{min-width:60px}.musicDock input,.ambienceDock input{width:62px}}
+
 </style>
 </head>
 <body>
@@ -715,6 +742,7 @@ button:focus-visible,label:focus-within{outline:3px solid #ffdb92;outline-offset
 <header class="topbar">
  <div class="brand"><div class="logo">🌙</div><div><h1>不太灵的女巫</h1><small>月光工坊 · 慢慢创造一点小奇迹</small></div></div>
  <div class="musicDock"><button type="button" id="musicToggleBtn" onclick="toggleMusic()" aria-label="开启或关闭背景音乐"><span id="musicIcon">♫</span><span id="musicButtonText">开启童话音乐</span></button><label>音量 <input id="musicVolume" type="range" min="0" max="100" step="1" value="45" oninput="setMusicVolume(this.value)" aria-label="背景音乐音量"></label><small id="musicStatus">音乐已关闭</small></div>
+ <div class="ambienceDock"><button type="button" id="ambienceToggleBtn" onclick="toggleAmbience()" aria-label="开启或关闭环境音"><span id="ambienceIcon">♧</span><span id="ambienceButtonText">开启环境音</span></button><label>音量 <input id="ambienceVolume" type="range" min="0" max="100" step="1" value="32" oninput="setAmbienceVolume(this.value)" aria-label="环境音音量"></label><small id="ambienceStatus">环境音已关闭</small></div>
  <div class="resources"><div class="resource">💗 <b id="energy">12</b>/12</div><div class="resource">🪙 <b id="coins">120</b></div><div class="resource">✨ Lv.<b id="level">1</b></div></div>
 </header>
 <div class="shell">
@@ -804,7 +832,7 @@ const visitors=[
  {id:"fox",name:"栗子狐狸",e:"🦊",ask:"我想在森林夜路上挂一盏星星灯，你能帮我做一盏吗？",recipe:"star",reward:42,thanks:"太漂亮啦！我会把它挂在回家的树枝上。"},
  {id:"owl",name:"咕咕猫头鹰",e:"🦉",ask:"我想送朋友一份甜甜的礼物，有暖暖蜜露吗？",recipe:"honey",reward:30,thanks:"这份甜味让我想起了很久以前的家。"}
 ];
-const defaults={bag:{mush:3,crystal:2,flower:2,firefly:1,feather:1,honey:2},crafted:{},found:[],gallery:{favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{}},coins:120,energy:12,xp:0,level:1,decor:[],activeDecor:[],visitorDone:[],tasks:{gather:0,craft:0,visit:0},lastDay:new Date().toDateString(),selected:"moon",catLove:0,catGiftDay:"",affection:0,claimed:{gather:false,craft:false,visit:false},shopOwned:[],activeSkin:"default",lastVisitAt:Date.now(),welcomeMessage:"",furniturePositions:{},soundOn:false,musicOn:false,musicVolume:45,craftQuality:"",catMood:"idle",catLine:"喵～今天也要做点神奇的东西吗？",catActions:{pet:false,play:false,nap:false,treat:false},catBondTitle:"初次相遇",catMoment:{day:"",choice:"",claimed:false},research:{unlocked:[],completed:{}},townVisited:[],townStory:[],townDaily:{garden:"",star:"",wish:""},gardenBeds:[null,null,null],gardenWeather:{day:"",kind:"mist"},gardenStock:{moonbell:0,dreammush:0,starlily:0},gardenOrder:{day:"",crop:"",qty:0,reward:0,claimed:false},townUnlocked:["cottage","forest","shop","board","garden","observatory","tree"],forest:{steps:0,discoveries:[],log:[],event:null,trailMarks:0,treasureClaimed:false,lastChestCycle:0,areas:["mushroom_path"],rareFinds:[],spriteFriend:false,friends:[],friendVisitDay:"",friendVisits:{},bonds:{},interactDay:{}},
+const defaults={bag:{mush:3,crystal:2,flower:2,firefly:1,feather:1,honey:2},crafted:{},found:[],gallery:{favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{}},coins:120,energy:12,xp:0,level:1,decor:[],activeDecor:[],visitorDone:[],tasks:{gather:0,craft:0,visit:0},lastDay:new Date().toDateString(),selected:"moon",catLove:0,catGiftDay:"",affection:0,claimed:{gather:false,craft:false,visit:false},shopOwned:[],activeSkin:"default",lastVisitAt:Date.now(),welcomeMessage:"",furniturePositions:{},soundOn:false,musicOn:false,musicVolume:45,ambienceOn:false,ambienceVolume:32,craftQuality:"",catMood:"idle",catLine:"喵～今天也要做点神奇的东西吗？",catActions:{pet:false,play:false,nap:false,treat:false},catBondTitle:"初次相遇",catMoment:{day:"",choice:"",claimed:false},research:{unlocked:[],completed:{}},townVisited:[],townStory:[],townDaily:{garden:"",star:"",wish:""},gardenBeds:[null,null,null],gardenWeather:{day:"",kind:"mist"},gardenStock:{moonbell:0,dreammush:0,starlily:0},gardenOrder:{day:"",crop:"",qty:0,reward:0,claimed:false},townUnlocked:["cottage","forest","shop","board","garden","observatory","tree"],forest:{steps:0,discoveries:[],log:[],event:null,trailMarks:0,treasureClaimed:false,lastChestCycle:0,areas:["mushroom_path"],rareFinds:[],spriteFriend:false,friends:[],friendVisitDay:"",friendVisits:{},bonds:{},interactDay:{}},
  wardrobeOwned:["starter_hat"],equippedWearables:{hat:"starter_hat",cape:"",wand:"",cat:"",costume:"blossom_robe"},houseTier:1,
  residentStory:{stage:0,choices:[],keepsake:false},
  catMilestones:[],cozyMoments:{day:"",done:[]},luluRoutine:"idle",tutorial:{step:0,done:false}};
@@ -812,7 +840,7 @@ const hasPriorSave=!!safeStorageRead("moonlightV3");
 function safeStorageRead(key){try{return localStorage.getItem(key)}catch(e){return null}}
 let saveWarningShown=false;
 let s=load(),scene="home",craftStep=0,selected=recipes[0],activeVisitor=visitors[0],toastTimer;
-function load(){try{let old=JSON.parse(safeStorageRead("moonlightV3")||"{}");if(Object.keys(old).length)validateSaveData(old);let merged={...defaults,...old};merged.tasks={...defaults.tasks,...(old.tasks||{})};merged.claimed={...defaults.claimed,...(old.claimed||{})};merged.shopOwned=old.shopOwned||[];merged.affection=old.affection||0;merged.lastVisitAt=old.lastVisitAt||Date.now();merged.welcomeMessage=old.welcomeMessage||"";merged.furniturePositions=old.furniturePositions||{};merged.soundOn=false;merged.musicOn=false;merged.musicVolume=Number.isFinite(Number(old.musicVolume))?Math.max(0,Math.min(100,Number(old.musicVolume))):45;merged.craftQuality="";merged.catMood=old.catMood||"idle";merged.catLine=old.catLine||"喵～今天也要做点神奇的东西吗？";merged.catActions={pet:false,play:false,nap:false,treat:false,...(old.catActions||{})};merged.catBondTitle=old.catBondTitle||"初次相遇";merged.catMoment={day:"",choice:"",claimed:false,...(old.catMoment||{})};merged.research={unlocked:[],completed:{},...(old.research||{})};merged.townVisited=old.townVisited||[];merged.townStory=old.townStory||[];merged.townDaily=old.townDaily||{garden:"",star:"",wish:""};merged.gardenBeds=Array.isArray(old.gardenBeds)?old.gardenBeds:[null,null,null];merged.gardenWeather=old.gardenWeather||{day:"",kind:"mist"};merged.gardenStock={...defaults.gardenStock,...(old.gardenStock||{})};merged.gardenOrder={...defaults.gardenOrder,...(old.gardenOrder||{})};merged.townUnlocked=old.townUnlocked||["cottage","forest","shop","board","garden","observatory","tree"];merged.gallery={favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{},...(old.gallery||{})};merged.gallery.variants=old.gallery?.variants||{};merged.gallery.variantDisplay=old.gallery?.variantDisplay||{};const rawDisplaySlots=Array.isArray(old.gallery?.displaySlots)?old.gallery.displaySlots:[];const usedDisplayIds=new Set();merged.gallery.displaySlots=[0,1,2].map(i=>{const id=rawDisplaySlots[i];if(typeof id==="string"&&merged.found.includes(id)&&!usedDisplayIds.has(id)){usedDisplayIds.add(id);return id;}return null;});merged.forest={...defaults.forest,...(old.forest||{})};
+function load(){try{let old=JSON.parse(safeStorageRead("moonlightV3")||"{}");if(Object.keys(old).length)validateSaveData(old);let merged={...defaults,...old};merged.tasks={...defaults.tasks,...(old.tasks||{})};merged.claimed={...defaults.claimed,...(old.claimed||{})};merged.shopOwned=old.shopOwned||[];merged.affection=old.affection||0;merged.lastVisitAt=old.lastVisitAt||Date.now();merged.welcomeMessage=old.welcomeMessage||"";merged.furniturePositions=old.furniturePositions||{};merged.soundOn=false;merged.musicOn=false;merged.musicVolume=Number.isFinite(Number(old.musicVolume))?Math.max(0,Math.min(100,Number(old.musicVolume))):45;merged.ambienceOn=false;merged.ambienceVolume=Number.isFinite(Number(old.ambienceVolume))?Math.max(0,Math.min(100,Number(old.ambienceVolume))):32;merged.craftQuality="";merged.catMood=old.catMood||"idle";merged.catLine=old.catLine||"喵～今天也要做点神奇的东西吗？";merged.catActions={pet:false,play:false,nap:false,treat:false,...(old.catActions||{})};merged.catBondTitle=old.catBondTitle||"初次相遇";merged.catMoment={day:"",choice:"",claimed:false,...(old.catMoment||{})};merged.research={unlocked:[],completed:{},...(old.research||{})};merged.townVisited=old.townVisited||[];merged.townStory=old.townStory||[];merged.townDaily=old.townDaily||{garden:"",star:"",wish:""};merged.gardenBeds=Array.isArray(old.gardenBeds)?old.gardenBeds:[null,null,null];merged.gardenWeather=old.gardenWeather||{day:"",kind:"mist"};merged.gardenStock={...defaults.gardenStock,...(old.gardenStock||{})};merged.gardenOrder={...defaults.gardenOrder,...(old.gardenOrder||{})};merged.townUnlocked=old.townUnlocked||["cottage","forest","shop","board","garden","observatory","tree"];merged.gallery={favorite:"",notes:{},firstSeen:{},variants:{},variantDisplay:{},...(old.gallery||{})};merged.gallery.variants=old.gallery?.variants||{};merged.gallery.variantDisplay=old.gallery?.variantDisplay||{};const rawDisplaySlots=Array.isArray(old.gallery?.displaySlots)?old.gallery.displaySlots:[];const usedDisplayIds=new Set();merged.gallery.displaySlots=[0,1,2].map(i=>{const id=rawDisplaySlots[i];if(typeof id==="string"&&merged.found.includes(id)&&!usedDisplayIds.has(id)){usedDisplayIds.add(id);return id;}return null;});merged.forest={...defaults.forest,...(old.forest||{})};
  merged.forest.areas=old.forest?.areas||["mushroom_path"];
  merged.forest.lastChestCycle=Number.isFinite(Number(old.forest?.lastChestCycle))?Number(old.forest.lastChestCycle):(old.forest?.treasureClaimed?Math.floor((old.forest.steps||0)/5):0);
  merged.forest.rareFinds=old.forest?.rareFinds||[];
@@ -1701,6 +1729,145 @@ function createMusicEngine(){
  musicDelayFilter.connect(musicWet);musicWet.connect(musicMaster);
  return true;
 }
+
+let ambienceMaster=null,ambienceNoiseBuffer=null,ambienceNodes=new Set(),ambiencePlaying=false,ambienceSceneKey="",ambienceTransitionTimer=null;
+function ambienceThemeForScene(v){
+ const eco=forestEcology(),weather=eco.weather.id;
+ if(v==="grove"||v==="forestEvent"||v==="bestiary"||v==="habitat")return "forest-"+weather+"-"+(eco.phase==="夜晚"?"night":"day");
+ if(v==="craft")return "workshop";
+ if(v==="town"||v==="observatory"||v==="wish"||v==="journal"||v==="resident")return "town";
+ if(v==="visitors")return "doorstep";
+ return "cottage-"+weather;
+}
+function ambienceThemeName(){
+ const key=ambienceSceneKey||ambienceThemeForScene(scene);
+ if(key.startsWith("forest-")){
+  const weather=key.split("-")[1];
+  return ({mist:"雾林风声",clear:"夜虫与微风",rain:"林间细雨",glow:"萤火虫轻鸣"})[weather]||"森林环境音";
+ }
+ return ({workshop:"坩埚咕噜声",town:"月光风铃",doorstep:"小屋门前", "cottage-mist":"壁炉与窗外薄雾","cottage-clear":"壁炉与夜虫","cottage-rain":"壁炉与窗外细雨","cottage-glow":"壁炉与萤光夜"})[key]||"童话环境音";
+}
+function updateAmbienceUI(){
+ const btn=$("ambienceToggleBtn");if(!btn)return;
+ btn.classList.toggle("playing",ambiencePlaying);
+ $("ambienceIcon").textContent=ambiencePlaying?"❋":"♧";
+ $("ambienceButtonText").textContent=ambiencePlaying?"关闭环境音":"开启环境音";
+ $("ambienceStatus").textContent=ambiencePlaying?ambienceThemeName():"环境音已关闭";
+ const slider=$("ambienceVolume");if(slider)slider.value=String(s.ambienceVolume===undefined?32:s.ambienceVolume);
+}
+function createAmbienceEngine(){
+ if(!musicCtx&&!createMusicEngine())return false;
+ if(!ambienceMaster){
+  ambienceMaster=musicCtx.createGain();ambienceMaster.gain.value=0;ambienceMaster.connect(musicCtx.destination);
+  const length=Math.max(1,Math.floor(musicCtx.sampleRate*2));
+  ambienceNoiseBuffer=musicCtx.createBuffer(1,length,musicCtx.sampleRate);
+  const data=ambienceNoiseBuffer.getChannelData(0);
+  for(let i=0;i<length;i++)data[i]=Math.random()*2-1;
+ }
+ return true;
+}
+function trackAmbienceNode(node){
+ ambienceNodes.add(node);
+ node.onended=()=>{ambienceNodes.delete(node);try{node.disconnect();}catch(e){}};
+}
+function ambienceNoise(filterType,frequency,level,modRate=0,modDepth=0,q=.4){
+ const source=musicCtx.createBufferSource(),filter=musicCtx.createBiquadFilter(),gain=musicCtx.createGain();
+ source.buffer=ambienceNoiseBuffer;source.loop=true;
+ filter.type=filterType;filter.frequency.value=frequency;filter.Q.value=q;
+ gain.gain.value=level;
+ source.connect(filter);filter.connect(gain);gain.connect(ambienceMaster);
+ trackAmbienceNode(source);source.start();
+ if(modRate>0){
+  const lfo=musicCtx.createOscillator(),lfoGain=musicCtx.createGain();
+  lfo.frequency.value=modRate;lfoGain.gain.value=modDepth;
+  lfo.connect(lfoGain);lfoGain.connect(gain.gain);trackAmbienceNode(lfo);lfo.start();
+ }
+}
+function ambienceTone(frequency,level,wave="sine",modRate=0,modDepth=0){
+ const osc=musicCtx.createOscillator(),gain=musicCtx.createGain();
+ osc.type=wave;osc.frequency.value=frequency;gain.gain.value=level;
+ osc.connect(gain);gain.connect(ambienceMaster);trackAmbienceNode(osc);osc.start();
+ if(modRate>0){
+  const lfo=musicCtx.createOscillator(),lfoGain=musicCtx.createGain();
+  lfo.frequency.value=modRate;lfoGain.gain.value=modDepth;
+  lfo.connect(lfoGain);lfoGain.connect(gain.gain);trackAmbienceNode(lfo);lfo.start();
+ }
+}
+function stopAmbienceNodes(){
+ ambienceNodes.forEach(node=>{try{node.stop(musicCtx.currentTime+.04)}catch(e){}});
+ ambienceNodes.clear();
+}
+function startAmbienceScene(key){
+ if(!ambiencePlaying||!musicCtx||!ambienceMaster)return;
+ clearTimeout(ambienceTransitionTimer);
+ const now=musicCtx.currentTime;
+ ambienceMaster.gain.cancelScheduledValues(now);
+ ambienceMaster.gain.setTargetAtTime(0,now,.12);
+ stopAmbienceNodes();
+ const level=Math.max(0,Math.min(100,Number(s.ambienceVolume===undefined?32:s.ambienceVolume)))/100;
+ if(key==="workshop"){
+  ambienceNoise("lowpass",360,.018,1.1,.006);
+  ambienceNoise("bandpass",980,.004,2.3,.002,1.2);
+  ambienceTone(78,.0025,"triangle",.8,.0012);
+ }else if(key==="town"||key==="doorstep"){
+  ambienceNoise("lowpass",420,.008,.16,.002);
+  ambienceNoise("bandpass",2300,.0018,.11,.001,1.5);
+  ambienceTone(key==="town"?880:660,.00065,"sine",.08,.00035);
+ }else if(key.startsWith("forest-")){
+  const weather=key.split("-")[1];
+  ambienceNoise("lowpass",weather==="mist"?520:310,.014,.12,.004);
+  if(weather==="rain")ambienceNoise("bandpass",1050,.013,.22,.004,1.1);
+  if(weather==="mist")ambienceNoise("bandpass",720,.003,.07,.001,1.3);
+  if(weather==="clear"||weather==="glow"||key.endsWith("night"))ambienceTone(2550,.0015,"sine",4.8,.0011);
+  if(weather==="glow")ambienceTone(1860,.0008,"sine",3.7,.0005);
+ }else{
+  ambienceNoise("lowpass",460,.009,.17,.0025);
+  ambienceNoise("bandpass",1650,.004,2.1,.0025,1.3);
+  if(key==="cottage-rain")ambienceNoise("bandpass",920,.012,.19,.003,1.2);
+  if(key==="cottage-mist")ambienceNoise("lowpass",260,.007,.09,.002);
+  if(key==="cottage-clear")ambienceTone(2350,.001,"sine",4.1,.0008);
+  if(key==="cottage-glow")ambienceTone(1950,.0008,"sine",3.4,.0005);
+ }
+ const target=level*.7;
+ ambienceMaster.gain.setValueAtTime(0,musicCtx.currentTime);
+ ambienceMaster.gain.linearRampToValueAtTime(target,musicCtx.currentTime+.75);
+ updateAmbienceUI();
+}
+function syncAmbienceScene(v){
+ const next=ambienceThemeForScene(v);
+ if(next===ambienceSceneKey)return;
+ ambienceSceneKey=next;
+ if(ambiencePlaying)startAmbienceScene(next);
+ else updateAmbienceUI();
+}
+async function toggleAmbience(){
+ if(ambiencePlaying){
+  ambiencePlaying=false;s.ambienceOn=false;save();
+  if(ambienceMaster&&musicCtx){
+   const now=musicCtx.currentTime;ambienceMaster.gain.cancelScheduledValues(now);
+   ambienceMaster.gain.setTargetAtTime(0,now,.12);
+   clearTimeout(ambienceTransitionTimer);
+   ambienceTransitionTimer=setTimeout(stopAmbienceNodes,500);
+  }
+  updateAmbienceUI();toast("环境音已轻轻停下");return;
+ }
+ if(!createAmbienceEngine()){toast("当前浏览器不支持环境音");return;}
+ try{
+  await musicCtx.resume();
+  ambiencePlaying=true;s.ambienceOn=true;save();
+  ambienceSceneKey=ambienceThemeForScene(scene);startAmbienceScene(ambienceSceneKey);
+  updateAmbienceUI();toast("🌿 童话世界的声音苏醒了");
+ }catch(e){ambiencePlaying=false;s.ambienceOn=false;updateAmbienceUI();toast("环境音暂时无法播放，请再试一次");}
+}
+function setAmbienceVolume(value){
+ const n=Math.max(0,Math.min(100,Number(value)||0));s.ambienceVolume=n;save();
+ if(ambiencePlaying&&ambienceMaster&&musicCtx){
+  const now=musicCtx.currentTime;ambienceMaster.gain.cancelScheduledValues(now);
+  ambienceMaster.gain.setTargetAtTime(n/100*.7,now,.08);
+ }
+ updateAmbienceUI();
+}
+
 function musicMidi(midi){return 440*Math.pow(2,(midi-69)/12);}
 function trackMusicNode(osc){
  musicNodes.add(osc);
@@ -1783,7 +1950,7 @@ function playMagicChime(){
 }
 
 function renderScene(){
- syncMusicScene(scene);updateMusicUI();
+ syncMusicScene(scene);updateMusicUI();syncAmbienceScene(scene);
  ensureSaveTools();
  let st=$("stage");
  const worldTime=getWorldTime();
@@ -1800,17 +1967,16 @@ function renderScene(){
  let spark=st.querySelector(".actorSpark");if(spark)spark.remove();
  let oldAmbience=st.querySelector(".worldAmbience");if(oldAmbience)oldAmbience.remove();
  st.querySelectorAll(".forestMagicLayer,.forestLegend,.forestHotspot,.townLegend,.townHotspot").forEach(e=>e.remove());
- if(scene==="grove"){
-  let magic=document.createElement("div");magic.className="forestMagicLayer";
+ const ecology=forestEcology();
+ const weather=ecology.weather.id;
+ if(scene==="grove"||scene==="forestEvent"){
+  let magic=document.createElement("div");magic.className="forestMagicLayer weather-"+weather;
   magic.innerHTML=`<div class="forestFireflies"></div><div class="forestButterflies"><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div><div class="forestMist"></div>`;
   st.appendChild(magic);
  }
- let ambience=document.createElement("div");ambience.className="worldAmbience "+worldTime.id;
- const weatherTypes=["clear","rain","snow"];
- const weatherIndex=(new Date().getDate()+new Date().getMonth())%weatherTypes.length;
- const weather=weatherTypes[weatherIndex];
- ambience.classList.add("weather-"+weather);
- ambience.innerHTML=`<div class="ambienceOrb"></div><div class="ambienceStars">✦　·　✧　　 ✦　·　✧</div><div class="weatherParticles"></div><div class="ambienceCaption">${worldTime.icon} ${worldTime.label} · ${weather==="rain"?"窗外正下着细雨":weather==="snow"?"窗外飘着轻雪":"天气晴好"} · ${worldTime.line}</div>`;
+ let ambience=document.createElement("div");ambience.className="worldAmbience "+worldTime.id+" weather-"+weather;
+ const weatherLabel={mist:"薄雾轻绕",clear:"月色晴朗",rain:"林间细雨",glow:"萤光飞舞"}[weather]||ecology.weather.name;
+ ambience.innerHTML=`<div class="ambienceOrb"></div><div class="ambienceStars">✦　·　✧　　 ✦　·　✧</div><div class="weatherParticles"></div><div class="ambienceCaption">${worldTime.icon} ${worldTime.label} · ${ecology.weather.emoji} ${weatherLabel} · ${worldTime.line}</div>`;
  st.appendChild(ambience);
  if(scene==="grove"||scene==="forestEvent"){
   let legend=document.createElement("div");legend.className="forestLegend";legend.textContent="🌲 月光森林 · 点击地点探索，每次消耗1精力";st.appendChild(legend);
